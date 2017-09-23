@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sort Without Articles</title>
+</head>
+<body>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: url("http://www.spitzer.caltech.edu/uploaded_files/images/0009/7813/sig13-08.jpg");
+      background-size: cover;
+      display: flex;
+      align-items: center;
+/**Las medidas vh y vw son medidas relativas de acuerdo al viewport. Vh hace 
+referencia a la centésima parte de la altura del viewport y vw a la centésima parte del ancho del viewport.**/
+      min-height: 100vh;
+    }
+    #bands {
+      list-style: inside square;
+      font-size: 20px;
+      background: #5555D6;
+      width: 500px;
+      margin: auto;
+      padding: 0;
+      box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+    #bands li {
+      border-bottom: 1px solid #efefef;
+      padding: 20px;
+    }
+    #bands li:last-child {
+      border-bottom: 0;
+    }
+    a {
+      color: #ffc600;
+      text-decoration: none;
+    }
+  </style>
+
+  <ul id="bands"></ul>
+
+<script>
+const bands = ['Depeche Mod', 'The Devil Wears Prada', 'Pierce the Veil', '', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+function strip(bandName) {
+    //remplaza las letras a,the y an por un espacio en blanco
+    //ysoneliminados con trim  
+  return bandName.replace(/^(a |the |an )/i, '').trim();
+}
+const sortedBands = bands.sort((a, b) => strip(a) > strip(b) ? 1 : -1);
+document.querySelector('#bands').innerHTML =
+  sortedBands
+  // regresa el nombre de la banda como un elemento de la lista
+    .map(band => `<li>${band}</li>`)
+    .join('');
+console.log(sortedBands);
+</script>
+
+</body>
+</html>
