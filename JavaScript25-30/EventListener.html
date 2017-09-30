@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after { box-sizing: inherit; }
+  div {
+    width:100%;
+    padding:100px;
+  }
+  .one {
+    background: #5E0202;
+  }
+  .two {
+    background:mistyrose;
+  }
+  .three {
+    background:#07267E;
+  }
+</style>
+
+<button></button>
+<script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+  function logText(e) {
+    //a dar click en algun fondo es como si dieramos click en todos incluyendo en el body.
+    console.log(this.classList.value);
+   // e.stopPropagation(); 
+    // solo disara el listener del color que dimos click en lugar de que activemos todos los listener.
+    // console.log(this);
+  }
+  //a cada clase sele asignaun Listener
+  divs.forEach(div => div.addEventListener('click', logText, {
+    //cuando se hace true se desactiva, el que dispare los Listeners de los demas fondos
+    capture: false,
+    //solo se disparan los Listeners una sola vez aunque le sigamos dando click.
+    once: true
+  }));
+  button.addEventListener('click', () => {
+    console.log('Click!!!');
+  }, {
+    once: true
+  });
+</script>
+</body>
+</html>
