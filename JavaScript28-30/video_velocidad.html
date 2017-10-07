@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
+    <p>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+<script>
+  const speed = document.querySelector('.speed');
+  const bar = speed.querySelector('.speed-bar');
+  const video = document.querySelector('.flex');
+  function handleMove(e) {
+      //le asignamos las medidas de la barra de velocidad
+      const y = e.pageY - this.offsetTop;
+      const percent = y / this.offsetHeight;
+      //velocida minima y maxima del video.
+      const min = 0.4;
+      const max = 5;
+      //porcentaje de velocidad.
+      const height = Math.round(percent * 100) + '%';
+      //establecemos la  velocidad minimaa la cual ira el video.
+      const playbackRate = percent * (max - min) + min;
+      bar.style.height = height;
+      //muestra la  velocidad alaque va el video.
+      //twoFixed() leasignamos el numero dedecimales qque deseamos que muestre.
+      bar.textContent = playbackRate.toFixed(2) + '×';
+      //cambiamos la velocidad de reproduccion del video
+      video.playbackRate = playbackRate;
+    }
+  speed.addEventListener('mousemove', handleMove);
+</script>
+</body>
+</html>
