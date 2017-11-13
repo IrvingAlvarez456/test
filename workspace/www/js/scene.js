@@ -8,13 +8,16 @@
     let renderer = new THREE.WebGLRenderer();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enable = true;
+    renderer.shadowMap.soft = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
 
     //busca el nodo padre y agrega lo que creamos al elemento.
     //domElement es un canvas.
     document.body.appendChild(renderer.domElement);
 
     camera.position.z = 60;
-    camera.position.y = 15;
+    camera.position.y = 10;
     let mesh;
 
     let planeGeometry = new THREE.PlaneGeometry(200,900);
@@ -24,6 +27,7 @@
         color: 0xfffffff
     });
     let plane = new THREE.Mesh(planeGeometry,groundMaterial);
+    plane.receiveShadow = true;
 
     let loader = new THREE.TextureLoader();
 
@@ -34,8 +38,9 @@
         })
 
         mesh = new THREE.Mesh(geometry, material);
-
-        mesh.position.y = 20;
+        //esa primitiva sera la que proyectara la sonbra.
+        mesh.position.y = 25;
+        mesh.castShadow = true;
         scene.add(mesh);
     })
 
@@ -50,7 +55,7 @@
     /*1 = radio interno
     2 = radio externo 
     32 = numero de segmentos */
-    let geomtetryring = new THREE.RingGeometry(1, 5, 32);
+ /*   let geomtetryring = new THREE.RingGeometry(1, 5, 32);
     let materialRing = new THREE.MeshPhongMaterial({
         color: 0xff0f0f,
         side: THREE.DoubleSide
@@ -76,11 +81,14 @@
     });
 
     //let mesh = new THREE.Mesh(geometry, groundMaterial);
+*/
+    let pointLight = new THREE.PointLight(0x606060);
 
-    let pointLight = new THREE.PointLight(0x404040);
+    pointLight.position.y = 60;
+    pointLight.position.z = 20;
 
-    pointLight.position.y = 80;
-
+    pointLight.castShadow = true;
+    
     //scene.add(mesh);
     scene.add(Circle);
     //scene.add(Ring);
@@ -88,19 +96,21 @@
     //scene.add(Triangle);
     //scene.add(Cone);
 
+    scene.background = new THREE.Color(0xeeeeee);    
     scene.add(new THREE.AmbientLight(0x404040));
+    scene.add(plane);
     scene.add(pointLight);
+    
 
-    renderer.render(scene, camera);
-
+    
+    
+    let controls = new THREE.OrbitControls(camera, renderer.domElement);
     function loop() {
         //ya es una animacion, por lo que ya se esta dibujando varias veces.
         //ciclo que permite ver el grafico dentro de la escena.
         requestAnimationFrame(loop);
-        //mesh.rotation.y += 0.01;
-        //mesh.rotation.z += 0.01;
-
-       
+        mesh.rotation.x += 0.01;
+        //mesh.rotation.z += 0.01;       
         //console.log("new frame");
         renderer.render(scene, camera);
 
