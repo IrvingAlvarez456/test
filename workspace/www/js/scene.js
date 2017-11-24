@@ -19,6 +19,7 @@
     camera.position.z = 60;
     camera.position.y = 10;
     let mesh;
+    var material;
 
     let planeGeometry = new THREE.PlaneGeometry(200,900);
     //makeRotatiion es para que el plano se redibuje una y otra vez.
@@ -28,21 +29,28 @@
     });
     let plane = new THREE.Mesh(planeGeometry,groundMaterial);
     plane.receiveShadow = true;
-
-    let loader = new THREE.TextureLoader();
-
-    loader.load('public/map.jpg', function (texture) {
-        let geometry = new THREE.SphereGeometry(10,50, 50)
-        let material = new THREE.MeshBasicMaterial({
-            map: texture
-        })
-
+    let geometry = new THREE.SphereGeometry(10,50, 50);
+    document.body.onkeypress = function (e){
+        var x = e.keyCode;
+        console.log(x);
+        
+        if (x===97){ 
+            var loader = new THREE.TextureLoader().load('public/map.jpg')
+            console.log("si entra");
+            material = new THREE.MeshBasicMaterial({map: loader })
+            mesh = new THREE.Mesh(geometry, material);
+            console.log(material);
+        }else{
+            console.log("no entro");        }
+        mesh = new THREE.Mesh(geometry, material);
+    } 
+        material = new THREE.MeshBasicMaterial({color: 0xeffffe});
         mesh = new THREE.Mesh(geometry, material);
         //esa primitiva sera la que proyectara la sonbra.
         mesh.position.y = 25;
         mesh.castShadow = true;
         scene.add(mesh);
-    })
+    
 
     //alpha la estructura el mesh que se va a generar.
     //let geometry = new THREE.BoxGeometry(1,1,1,1);
